@@ -2,12 +2,15 @@ from dataclasses import dataclass
 from functools import total_ordering
 from math import gcd
 
+
 class RationalError(ArithmeticError):
     """Ошибка при работе с рациональными числами."""
 
 @total_ordering
 @dataclass(frozen=True)
 class Rational:
+    """Неизменяемая рациональная дробь в сокращённом виде."""
+
     num: int
     den: int = 1
 
@@ -23,7 +26,7 @@ class Rational:
     def __neg__(self) -> "Rational":
         return Rational(-self.num, self.den)
 
-    def __sub__(self, other: list) -> "Rational":
+    def __sub__(self, other) -> "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -40,7 +43,17 @@ class Rational:
 
         return other + (-self)
 
-    def __lt__(self, other) ->  "Rational":
+    def __eq__(self, other) -> bool:
+        if isinstance(other, int):
+            return self.den == 1 and self.num == other
+        if isinstance(other, Rational):
+            return self.num == other.num and self.den == other.den
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash(self.num) if self.den == 1 else hash((self.num, self.den))
+
+    def __lt__(self, other) -> bool:
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -48,7 +61,7 @@ class Rational:
 
         return self.num * other.den < other.num * self.den
 
-    def __mul__(self, other) ->  "Rational":
+    def __mul__(self, other) -> "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -103,8 +116,8 @@ class Rational:
         return Rational(abs(self.num), self.den)
 
     def __str__(self) -> str:
-        if self.num % self.den == 0:
-            return f"{int(self.num/self.den)}"
+        if self.den == 1:
+            return str(self.num)
         return f"{self.num}/{self.den}"
 
     def __repr__(self) -> str:
