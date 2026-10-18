@@ -20,7 +20,7 @@ class Rational:
         object.__setattr__(self, "den", sign * self.den // g)
 
 
-    def __neg__(self):
+    def __neg__(self) -> "Rational":
         return Rational(-self.num, self.den)
 
     def __sub__(self, other: list) -> "Rational":
@@ -32,7 +32,7 @@ class Rational:
         return self + (-other)
 
 
-    def __rsub__(self, other):
+    def __rsub__(self, other) -> "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -40,7 +40,7 @@ class Rational:
 
         return other + (-self)
 
-    def __lt__(self, other):
+    def __lt__(self, other) ->  "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -48,7 +48,7 @@ class Rational:
 
         return self.num * other.den < other.num * self.den
 
-    def __mul__(self, other):
+    def __mul__(self, other) ->  "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -59,7 +59,7 @@ class Rational:
 
     __rmul__ = __mul__
 
-    def __truediv__(self, other):
+    def __truediv__(self, other) -> "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -70,7 +70,7 @@ class Rational:
             
         return Rational(self.num * other.den, self.den * other.num)
 
-    def __rtruediv__(self, other):
+    def __rtruediv__(self, other) -> "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -81,7 +81,7 @@ class Rational:
 
         return Rational(other.num * self.den, other.den * self.num)
 
-    def __add__(self, other):
+    def __add__(self, other) -> "Rational":
         if isinstance(other, int):
             other = Rational(other, 1)
         if not isinstance(other, Rational):
@@ -96,21 +96,16 @@ class Rational:
 
     __radd__ = __add__
 
-    def __float__(self):
+    def __float__(self) -> float:
         return self.num / self.den
 
-    def __abs__(self):
+    def __abs__(self) -> "Rational":
         return Rational(abs(self.num), self.den)
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.num % self.den == 0:
             return f"{int(self.num/self.den)}"
         return f"{self.num}/{self.den}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Rational(num={self.num}, den={self.den})"
-
-
-r1 = Rational(6, 3)
-r2 = Rational(1, 2)
-print(r2 < r1)
